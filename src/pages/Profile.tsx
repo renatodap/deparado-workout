@@ -21,18 +21,16 @@ import {
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 import { NutritionSettings } from '../components/NutritionSettings';
-import { User as UserType, Stats, AppSettings, Page, NutritionGoals, AISettings } from '../types';
+import { User as UserType, Stats, AppSettings, Page, NutritionGoals } from '../types';
 
 interface ProfileProps {
   user: UserType;
   stats: Stats;
   settings: AppSettings;
   nutritionGoals?: NutritionGoals;
-  aiSettings?: AISettings;
   onUpdateUser: (user: Partial<UserType>) => void;
   onUpdateSettings: (settings: Partial<AppSettings>) => void;
   onUpdateNutritionGoals?: (goals: Partial<NutritionGoals>) => void;
-  onUpdateAISettings?: (settings: Partial<AISettings>) => void;
   onResetData: () => void;
   onNavigate: (page: Page) => void;
 }
@@ -42,11 +40,9 @@ export function Profile({
   stats,
   settings,
   nutritionGoals,
-  aiSettings,
   onUpdateUser,
   onUpdateSettings,
   onUpdateNutritionGoals,
-  onUpdateAISettings,
   onResetData,
   onNavigate
 }: ProfileProps) {
@@ -191,7 +187,7 @@ export function Profile({
                 onClick={() => setShowNutritionSettings(true)}
                 className="w-full py-2 text-sm text-primary-600 font-medium hover:bg-primary-50 rounded-lg transition-colors"
               >
-                Configurar metas e IA
+                Configurar metas
               </button>
             </div>
           </div>
@@ -384,7 +380,7 @@ export function Profile({
       </Modal>
 
       {/* Nutrition settings modal */}
-      {nutritionGoals && aiSettings && onUpdateNutritionGoals && onUpdateAISettings && (
+      {nutritionGoals && onUpdateNutritionGoals && (
         <Modal
           isOpen={showNutritionSettings}
           onClose={() => setShowNutritionSettings(false)}
@@ -393,9 +389,7 @@ export function Profile({
         >
           <NutritionSettings
             nutritionGoals={nutritionGoals}
-            aiSettings={aiSettings}
             onUpdateGoals={onUpdateNutritionGoals}
-            onUpdateAISettings={onUpdateAISettings}
             onClose={() => setShowNutritionSettings(false)}
           />
         </Modal>

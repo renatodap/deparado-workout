@@ -9,11 +9,7 @@ import {
   Calendar,
   Clock,
   Trash2,
-  ChevronLeft,
-  BookOpen,
-  Settings,
-  TrendingUp,
-  AlertCircle
+  ChevronLeft
 } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
@@ -26,7 +22,6 @@ interface NutritionProps {
   // From useNutrition hook
   mealItems: MealItem[];
   mealEntries: MealEntry[];
-  apiKey?: string;
   nutritionGoals: { dailyCalories: number; dailyProtein: number };
   // Methods
   addMealEntry: (entry: MealEntry) => void;
@@ -45,7 +40,6 @@ type FlowState = 'idle' | 'camera' | 'verification';
 export function Nutrition({
   mealItems,
   mealEntries,
-  apiKey,
   nutritionGoals,
   addMealEntry,
   deleteMealEntry,
@@ -175,7 +169,6 @@ export function Nutrition({
         photoBase64={capturedPhoto}
         description={capturedDescription}
         existingItems={mealItems}
-        apiKey={apiKey || ''}
         onConfirm={handleMealConfirm}
         onCancel={handleCancel}
         onAddItem={addMealItem}
@@ -191,25 +184,6 @@ export function Nutrition({
       />
 
       <main className="px-4 py-6 space-y-6 animate-fade-in">
-        {/* API Key Warning */}
-        {!apiKey && (
-          <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200 flex items-start gap-3">
-            <AlertCircle className="w-6 h-6 text-amber-500 flex-shrink-0" />
-            <div>
-              <p className="font-medium text-amber-800">Configure a IA</p>
-              <p className="text-sm text-amber-600 mt-1">
-                Adicione sua chave da API OpenRouter nas configurações para usar a análise inteligente de refeições.
-              </p>
-              <button
-                onClick={() => onNavigate('profile')}
-                className="mt-2 text-sm font-medium text-amber-700 hover:text-amber-800"
-              >
-                Ir para configurações →
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Date selector */}
         <div className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <button

@@ -26,7 +26,6 @@ interface MealVerificationProps {
   photoBase64: string;
   description: string;
   existingItems: MealItem[];
-  apiKey: string;
   onConfirm: (entry: Omit<MealEntry, 'id' | 'date' | 'timestamp' | 'verified'>) => void;
   onCancel: () => void;
   onAddItem: (item: MealItem) => void;
@@ -47,7 +46,6 @@ export function MealVerification({
   photoBase64,
   description,
   existingItems,
-  apiKey,
   onConfirm,
   onCancel,
   onAddItem
@@ -62,17 +60,10 @@ export function MealVerification({
   // Run AI analysis on mount
   useEffect(() => {
     async function runAnalysis() {
-      if (!apiKey) {
-        setError('Configure sua chave da API OpenRouter nas configurações para usar a análise inteligente.');
-        setIsLoading(false);
-        return;
-      }
-
       setIsLoading(true);
       setError(null);
 
       const result = await analyzeMealPhoto(
-        apiKey,
         photoBase64,
         description,
         mealType,
@@ -100,7 +91,7 @@ export function MealVerification({
     }
 
     runAnalysis();
-  }, [apiKey, photoBase64, description, mealType, existingItems]);
+  }, [photoBase64, description, mealType, existingItems]);
 
   // Calculate current totals from editable components
   const currentTotals = sumMacros(components.map(c => c.macros));
