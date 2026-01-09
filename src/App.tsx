@@ -5,7 +5,9 @@ import { TodayWorkout } from './pages/TodayWorkout';
 import { History } from './pages/History';
 import { Progress } from './pages/Progress';
 import { Profile } from './pages/Profile';
+import { Nutrition } from './pages/Nutrition';
 import { useStorage } from './hooks/useStorage';
+import { useNutrition } from './hooks/useNutrition';
 import { Page, WorkoutLog, ExerciseLog } from './types';
 import { getWorkoutPlanById, getTodayWorkout } from './data/workouts';
 
@@ -13,6 +15,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState<string | undefined>(undefined);
 
+  // Workout storage hook
   const {
     user,
     workoutLogs,
@@ -28,6 +31,26 @@ function App() {
     getWeekStats,
     resetData
   } = useStorage();
+
+  // Nutrition storage hook
+  const {
+    mealItems,
+    mealEntries,
+    mealTemplates,
+    nutritionGoals,
+    aiSettings,
+    addMealEntry,
+    deleteMealEntry,
+    addMealItem,
+    addMealTemplate,
+    deleteMealTemplate,
+    updateNutritionGoals,
+    updateAISettings,
+    getTodayProgress,
+    getMealEntriesForDate,
+    createTemplateFromEntry,
+    useTemplate
+  } = useNutrition();
 
   const handleNavigate = useCallback((page: Page) => {
     setCurrentPage(page);
@@ -133,14 +156,34 @@ function App() {
           />
         );
 
+      case 'nutrition':
+        return (
+          <Nutrition
+            mealItems={mealItems}
+            mealEntries={mealEntries}
+            apiKey={aiSettings.openRouterApiKey}
+            nutritionGoals={nutritionGoals}
+            addMealEntry={addMealEntry}
+            deleteMealEntry={deleteMealEntry}
+            addMealItem={addMealItem}
+            getTodayProgress={getTodayProgress}
+            getMealEntriesForDate={getMealEntriesForDate}
+            onNavigate={handleNavigate}
+          />
+        );
+
       case 'profile':
         return (
           <Profile
             user={user}
             stats={stats}
             settings={settings}
+            nutritionGoals={nutritionGoals}
+            aiSettings={aiSettings}
             onUpdateUser={updateUser}
             onUpdateSettings={updateSettings}
+            onUpdateNutritionGoals={updateNutritionGoals}
+            onUpdateAISettings={updateAISettings}
             onResetData={resetData}
             onNavigate={handleNavigate}
           />

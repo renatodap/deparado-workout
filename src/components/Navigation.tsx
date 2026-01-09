@@ -1,4 +1,4 @@
-import { Home, Dumbbell, History, TrendingUp, User } from 'lucide-react';
+import { Home, Dumbbell, Utensils, TrendingUp, User } from 'lucide-react';
 import { Page } from '../types';
 
 interface NavigationProps {
@@ -15,7 +15,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'home', icon: Home, label: 'Início' },
   { id: 'workout', icon: Dumbbell, label: 'Treino' },
-  { id: 'history', icon: History, label: 'Histórico' },
+  { id: 'nutrition', icon: Utensils, label: 'Nutrição' },
   { id: 'progress', icon: TrendingUp, label: 'Progresso' },
   { id: 'profile', icon: User, label: 'Perfil' }
 ];
