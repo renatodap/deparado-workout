@@ -13,18 +13,26 @@ import {
   Download,
   ChevronRight,
   Info,
-  Heart
+  Heart,
+  Utensils,
+  Flame,
+  Beef
 } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
-import { User as UserType, Stats, AppSettings, Page } from '../types';
+import { NutritionSettings } from '../components/NutritionSettings';
+import { User as UserType, Stats, AppSettings, Page, NutritionGoals, AISettings } from '../types';
 
 interface ProfileProps {
   user: UserType;
   stats: Stats;
   settings: AppSettings;
+  nutritionGoals?: NutritionGoals;
+  aiSettings?: AISettings;
   onUpdateUser: (user: Partial<UserType>) => void;
   onUpdateSettings: (settings: Partial<AppSettings>) => void;
+  onUpdateNutritionGoals?: (goals: Partial<NutritionGoals>) => void;
+  onUpdateAISettings?: (settings: Partial<AISettings>) => void;
   onResetData: () => void;
   onNavigate: (page: Page) => void;
 }
@@ -33,8 +41,12 @@ export function Profile({
   user,
   stats,
   settings,
+  nutritionGoals,
+  aiSettings,
   onUpdateUser,
   onUpdateSettings,
+  onUpdateNutritionGoals,
+  onUpdateAISettings,
   onResetData,
   onNavigate
 }: ProfileProps) {
@@ -42,6 +54,7 @@ export function Profile({
   const [showAbout, setShowAbout] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [tempName, setTempName] = useState(user.name);
+  const [showNutritionSettings, setShowNutritionSettings] = useState(false);
 
   const startDate = new Date(user.startDate);
   const daysSinceStart = Math.floor(
@@ -151,6 +164,38 @@ export function Profile({
             )}
           </div>
         </div>
+
+        {/* Nutrition Settings */}
+        {nutritionGoals && (
+          <div className="bg-white rounded-2xl p-4 border border-gray-100">
+            <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <Utensils className="w-5 h-5 text-green-500" />
+              Metas Nutricionais
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-orange-50 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Flame className="w-5 h-5 text-orange-500" />
+                  <span className="text-sm text-gray-700">Calorias diárias</span>
+                </div>
+                <span className="font-bold text-orange-600">{nutritionGoals.dailyCalories} kcal</span>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-red-50 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Beef className="w-5 h-5 text-red-500" />
+                  <span className="text-sm text-gray-700">Proteína diária</span>
+                </div>
+                <span className="font-bold text-red-600">{nutritionGoals.dailyProtein}g</span>
+              </div>
+              <button
+                onClick={() => setShowNutritionSettings(true)}
+                className="w-full py-2 text-sm text-primary-600 font-medium hover:bg-primary-50 rounded-lg transition-colors"
+              >
+                Configurar metas e IA
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Settings */}
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
@@ -323,12 +368,12 @@ export function Profile({
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">Dani Fitness</h3>
           <p className="text-gray-600 mb-4">
-            Seu app de treino personalizado
+            Seu app de treino e nutrição personalizado
           </p>
           <div className="text-sm text-gray-500 space-y-1">
             <p>Criado especialmente para Daniela Dansieri</p>
             <p>Academia: Clube Paulistano</p>
-            <p>Versão 1.0.0</p>
+            <p>Versão 2.0.0</p>
           </div>
           <div className="mt-6 p-4 bg-primary-50 rounded-xl">
             <p className="text-sm text-primary-700">
@@ -337,6 +382,24 @@ export function Profile({
           </div>
         </div>
       </Modal>
+
+      {/* Nutrition settings modal */}
+      {nutritionGoals && aiSettings && onUpdateNutritionGoals && onUpdateAISettings && (
+        <Modal
+          isOpen={showNutritionSettings}
+          onClose={() => setShowNutritionSettings(false)}
+          title="Configurações de Nutrição"
+          size="lg"
+        >
+          <NutritionSettings
+            nutritionGoals={nutritionGoals}
+            aiSettings={aiSettings}
+            onUpdateGoals={onUpdateNutritionGoals}
+            onUpdateAISettings={onUpdateAISettings}
+            onClose={() => setShowNutritionSettings(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
