@@ -25,7 +25,6 @@ interface NutritionStorage {
 
 // Default values
 const defaultAISettings: AISettings = {
-  openRouterApiKey: undefined,
   enableWebSearch: true
 };
 

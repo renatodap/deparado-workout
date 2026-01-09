@@ -244,9 +244,8 @@ export interface AIAnalysisResponse {
   suggestions?: string[];     // Tips for the user
 }
 
-// OpenRouter API key storage
+// AI Settings
 export interface AISettings {
-  openRouterApiKey?: string;
   enableWebSearch: boolean;
 }
 // AI Chat types

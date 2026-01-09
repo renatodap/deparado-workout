@@ -39,20 +39,13 @@ function App() {
   const {
     mealItems,
     mealEntries,
-    mealTemplates,
     nutritionGoals,
-    aiSettings,
     addMealEntry,
     deleteMealEntry,
     addMealItem,
-    addMealTemplate,
-    deleteMealTemplate,
     updateNutritionGoals,
-    updateAISettings,
     getTodayProgress,
-    getMealEntriesForDate,
-    createTemplateFromEntry,
-    useTemplate
+    getMealEntriesForDate
   } = useNutrition();
 
   const handleNavigate = useCallback((page: Page) => {
@@ -164,7 +157,6 @@ function App() {
           <Nutrition
             mealItems={mealItems}
             mealEntries={mealEntries}
-            apiKey={aiSettings.openRouterApiKey}
             nutritionGoals={nutritionGoals}
             addMealEntry={addMealEntry}
             deleteMealEntry={deleteMealEntry}
@@ -182,11 +174,9 @@ function App() {
             stats={stats}
             settings={settings}
             nutritionGoals={nutritionGoals}
-            aiSettings={aiSettings}
             onUpdateUser={updateUser}
             onUpdateSettings={updateSettings}
             onUpdateNutritionGoals={updateNutritionGoals}
-            onUpdateAISettings={updateAISettings}
             onResetData={resetData}
             onNavigate={handleNavigate}
           />
