@@ -249,3 +249,17 @@ export interface AISettings {
   openRouterApiKey?: string;
   enableWebSearch: boolean;
 }
+// AI Chat types
+export interface AIChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface AIContext {
+  exerciseName?: string;
+  workoutName?: string;
+  userStats?: {
+    totalWorkouts: number;
+    currentStreak: number;
+  };
+}

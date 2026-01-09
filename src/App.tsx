@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
+import { Bot } from 'lucide-react';
 import { Navigation } from './components/Navigation';
+import { AIChat } from './components/AIChat';
 import { Home } from './pages/Home';
 import { TodayWorkout } from './pages/TodayWorkout';
 import { History } from './pages/History';
@@ -14,6 +16,7 @@ import { getWorkoutPlanById, getTodayWorkout } from './data/workouts';
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [selectedWorkoutPlan, setSelectedWorkoutPlan] = useState<string | undefined>(undefined);
+  const [showAIChat, setShowAIChat] = useState(false);
 
   // Workout storage hook
   const {
@@ -194,12 +197,36 @@ function App() {
     }
   };
 
+  const aiContext = {
+    workoutName: selectedWorkoutPlan ? getWorkoutPlanById(selectedWorkoutPlan)?.shortName : undefined,
+    userStats: {
+      totalWorkouts: stats.totalWorkouts,
+      currentStreak: stats.currentStreak
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {renderPage()}
       {currentPage !== 'workout' && (
         <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
       )}
+
+      {/* AI Chat Button */}
+      <button
+        onClick={() => setShowAIChat(true)}
+        className="fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-full shadow-lg shadow-primary-500/40 flex items-center justify-center hover:scale-105 transition-transform z-40"
+        aria-label="Abrir chat com IA"
+      >
+        <Bot className="w-6 h-6" />
+      </button>
+
+      {/* AI Chat Modal */}
+      <AIChat
+        isOpen={showAIChat}
+        onClose={() => setShowAIChat(false)}
+        context={aiContext}
+      />
     </div>
   );
 }
